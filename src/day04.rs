@@ -1,48 +1,49 @@
-use std::{io, collections::HashSet, ops::Add};
+use std::collections::HashSet;
 use itertools::Itertools;
 use num_bigint::{BigUint, ToBigUint};
 
 
 
 #[derive(Debug, Default)]
+#[allow(dead_code)]
 pub struct ParseOutput {
     game_idx_info: i32,
     winning_nums: HashSet<i32>,
     bought_nums: HashSet<i32>,
 }
 
+
+
 pub fn pt2() -> Result<BigUint, ()> {
 
     let parse_out = parse()?;
 
-    let mut card_counts = vec![1.to_biguint().unwrap() ; parse_out.len()];
+    // let bigint_0 = 0.to_biguint().unwrap();
+    let bigint_1 = 1.to_biguint().unwrap();    
+
+    let mut card_counts = vec![ bigint_1.clone() ; parse_out.len()];
 
     parse_out
-            .into_iter()
-            .enumerate()
-            /* curr count, CURR pow of 2 */
-            .fold((0, 0), |mut acc, (idx, next)| {
-                // let idx = idx + 1;
-                acc.0 += idx as i128;
-                
-                let count = next.winning_nums
-                    .intersection(&next.bought_nums)
-                    .count();
-    
-                if count > 0 {
-                    acc.1 += 1;
-                    card_counts[idx+1..=idx+count]
-                        .iter_mut()
-                        .for_each(|cnt| {*cnt += 2.to_biguint().unwrap().pow(acc.1 - 1);})
-                }
-                // println!("curr counts {:?}; curr acc {:?}",
-                //     card_counts,
-                //     acc
-                // );
-    
-                acc
-            });
-    println!("curr counts: {:?}", card_counts);
+        .into_iter()
+        .enumerate()
+        .for_each(|(idx, output)| {
+            
+            let count = output.winning_nums
+                .intersection(&output.bought_nums)
+                .count();
+            /*
+                Add [ curr_card_num ]
+                to the next [ actual_won_nums ] card(s)
+             */
+            let curr_card_cnt = card_counts[idx].clone();
+            card_counts[idx + 1..=idx + count]
+                .iter_mut()
+                .for_each(|cnt| {
+                    *cnt += curr_card_cnt.clone();
+                });
+
+        });
+        
     Ok(card_counts.into_iter().sum())
 }
 
