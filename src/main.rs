@@ -1,4 +1,4 @@
-use aoc_2023::{day01, day02, day03, day04, day06};
+use aoc_2023::{day01, day02, day03, day04, day06, day07};
 
 
 
@@ -23,10 +23,21 @@ fn main() {
 
     /* d06 */
 
-    println!("Day 04 Res 1/2 = {:?}", day06::part2());
+    // println!("Day 06 Res 1/2 = {:?}", day06::part2());
 
-
+    /* d07 */
+    println!("Day 07 Res 1 = {:?}", day07::part1());
+    println!("Day 07 Res 2 = {:?}", day07::part2());
 }
+
+
+
+
+
+
+
+
+
 
 
 
